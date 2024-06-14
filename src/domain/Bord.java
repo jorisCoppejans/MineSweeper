@@ -112,6 +112,8 @@ public class Bord {
     if (veld.getStatus() == VakStatus.BOM) {
       System.out.println("Bom gevonden! Je bent verloren!");
       return true;
+    } else if (veld.isOpen()) {
+      System.out.println("Dit veld is al open");
     } else if (veld.getStatus() == VakStatus.AANGRENSENDE) {
       veld.setOpen(true);
     } else {
@@ -148,9 +150,18 @@ public class Bord {
       System.out.println("Alle bommen zijn al gemarkeerd");
       return false;
     }
-    this.geplaatsteBommen++;
+    if (this.velden.get(x).get(y).isGemarkeerd()) {
+      System.out.println("Dit veld is al gemarkeerd");
+      return false;
+    }
+
+    if (this.velden.get(x).get(y).isOpen()) {
+      System.out.println("Dit veld is al open");
+      return false;
+    }
 
     this.velden.get(x).get(y).setGemarkeerd(true);
+
     if (this.velden.get(x).get(y).getStatus() == VakStatus.BOM) {
       this.bommenOntdekt++;
     }
@@ -158,6 +169,8 @@ public class Bord {
       System.out.println("Proficiat! Je hebt gewonnen!");
       return true;
     }
+
+    this.geplaatsteBommen++;
     return false;
   }
 
