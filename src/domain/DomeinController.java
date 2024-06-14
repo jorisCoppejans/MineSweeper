@@ -10,7 +10,7 @@ public class DomeinController {
   boolean eindeSpel = false;
   Bord bord;
 
-  public void startSpel() {
+  public void maakSpel() {
     int moeilijkheidsgraad = kiesMoeilijkheidsgraad();
     kiesBord(moeilijkheidsgraad);
     berekenAangrenzendeBommen();
@@ -126,5 +126,55 @@ public class DomeinController {
 
   public void toonBord() {
     bord.toonBord();
+  }
+
+  public void startSpel() {
+    while (!isEindeSpel()) {
+      toonBord();
+      boolean wilOpenen = vraagActie();
+      Pair veld = vraagVak();
+      if (wilOpenen) {
+        this.eindeSpel = bord.openVak(veld.getX(), veld.getY());
+      } else {
+        markeerBom(veld);
+      }
+    }
+  }
+
+  private void markeerBom(Pair veld) {
+    bord.markeerBom(veld.getX(), veld.getY());
+  }
+
+  private boolean vraagActie() {
+    System.out.println("Wil je een vak openen? (ja/nee)");
+    String antwoord = scanner.next();
+    if (antwoord.equals("ja")) {
+      return true;
+    } else if (antwoord.equals("nee")) {
+      return false;
+    } else {
+      System.err.println("Antwoord moet ja of nee zijn");
+      return vraagActie();
+    }
+  }
+
+  private Pair vraagVak() {
+    System.out.println("Geef de rij: ");
+    int rij = scanner.nextInt();
+    rij--;
+    if (rij < 0 || rij >= bord.HoogteBord) {
+      System.err.println("Rij moet tussen 0 en " + (bord.HoogteBord - 1) + " liggen");
+      return vraagVak();
+    }
+
+    System.out.println("Geef de kolom: ");
+    int kolom = scanner.nextInt();
+    kolom--;
+    if (kolom < 0 || kolom >= bord.BreedteBord) {
+      System.err.println("Kolom moet tussen 0 en " + (bord.BreedteBord - 1) + " liggen");
+      return vraagVak();
+    }
+
+    return new Pair(rij, kolom);
   }
 }

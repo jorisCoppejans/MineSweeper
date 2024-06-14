@@ -89,15 +89,59 @@ public class Bord {
     for (int rij = 0; rij < this.velden.size(); rij++) {
       for (int kolom = 0; kolom < this.velden.get(rij).size(); kolom++) {
         Veld veld = this.velden.get(rij).get(kolom);
-        if (veld.getStatus() == VakStatus.BOM) {
-          System.out.print("B ");
+        if (veld.isGemarkeerd()) {
+          System.out.print("|X|");
+        } else if (!veld.isOpen()) {
+          System.out.print("| |");
+        } else if (veld.getStatus() == VakStatus.BOM) {
+          System.out.print("|B|");
         } else if (veld.getStatus() == VakStatus.AANGRENSENDE) {
-          System.out.print(veld.getAantalAangrenzendeBommen() + " ");
+          System.out.printf("|%d|", veld.getAantalAangrenzendeBommen());
         } else {
-          System.out.print("O ");
+          System.out.print("|0|");
         }
       }
       System.out.println();
     }
+  }
+
+  public boolean openVak(int x, int y) {
+    Veld veld = this.velden.get(x).get(y);
+    if (veld.getStatus() == VakStatus.BOM) {
+      System.out.println("Bom gevonden! Je bent verloren!");
+      return true;
+    } else if (veld.getStatus() == VakStatus.AANGRENSENDE) {
+      veld.setOpen(true);
+    } else {
+      openLegeVakken(x, y);
+    }
+    return false;
+  }
+
+  private void openLegeVakken(int x, int y) {
+    if (x < 0 || x >= this.velden.size() || y < 0 || y >= this.velden.get(x).size()
+        || this.velden.get(x).get(y).isOpen()) {
+      return;
+    }
+
+    Veld veld = this.velden.get(x).get(y);
+    veld.setOpen(true);
+
+    if (veld.getStatus() == VakStatus.AANGRENSENDE) {
+      return;
+    }
+
+    this.velden.get(x).get(y).setOpen(true);
+
+    int[] extraX = { -1, -1, -1, 0, 0, 1, 1, 1 };
+    int[] extraY = { -1, 0, 1, -1, 1, -1, 0, 1 };
+
+    for (int i = 0; i < 8; i++) {
+      openLegeVakken(x + extraX[i], y + extraY[i]);
+    }
+  }
+
+  public void markeerBom(int x, int y) {
+    this.velden.get(x).get(y).setGemarkeerd(true);
   }
 }
