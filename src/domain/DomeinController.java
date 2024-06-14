@@ -15,7 +15,25 @@ public class DomeinController {
     kiesBord(moeilijkheidsgraad);
     berekenAangrenzendeBommen();
     bord.showAangrenzendeBommen();
+  }
 
+  public void startSpel() {
+    while (!isEindeSpel()) {
+      toonBord();
+      boolean wilOpenen = vraagActie();
+      Pair veld = vraagVak();
+      if (wilOpenen) {
+        this.eindeSpel = bord.openVak(veld.getX(), veld.getY());
+      } else {
+        markeerBom(veld);
+      }
+    }
+
+    toonOpenBord();
+  }
+
+  private void toonOpenBord() {
+    bord.toonOpenBord();
   }
 
   private void berekenAangrenzendeBommen() {
@@ -104,9 +122,7 @@ public class DomeinController {
       Boolean magPlaatsen = controleerPlaatsBom(rij, kolom, bord);
       if (magPlaatsen) {
         bord.plaatsBom(rij, kolom);
-        System.out.printf("Bom geplaatst op rij: %d, kolom: %d%n", rij, kolom);
       } else {
-        System.out.printf("Hier was al een bom: x: %d, y: %d%n", rij, kolom);
         plaatsBommen(1, bord.BreedteBord, bord.HoogteBord, bord);
       }
     }
@@ -128,32 +144,19 @@ public class DomeinController {
     bord.toonBord();
   }
 
-  public void startSpel() {
-    while (!isEindeSpel()) {
-      toonBord();
-      boolean wilOpenen = vraagActie();
-      Pair veld = vraagVak();
-      if (wilOpenen) {
-        this.eindeSpel = bord.openVak(veld.getX(), veld.getY());
-      } else {
-        markeerBom(veld);
-      }
-    }
-  }
-
   private void markeerBom(Pair veld) {
     this.eindeSpel = bord.markeerBom(veld.getX(), veld.getY());
   }
 
   private boolean vraagActie() {
-    System.out.println("Wil je een vak openen? (ja/nee)");
+    System.out.printf("wat wil je doen?%n 1. Openen %n 2. Markeren als bom%n");
     String antwoord = scanner.next();
-    if (antwoord.equals("ja")) {
+    if (antwoord.equals("1")) {
       return true;
-    } else if (antwoord.equals("nee")) {
+    } else if (antwoord.equals("2")) {
       return false;
     } else {
-      System.err.println("Antwoord moet ja of nee zijn");
+      System.err.println("Antwoord moet 1 of 2 zijn");
       return vraagActie();
     }
   }

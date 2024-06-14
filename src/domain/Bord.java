@@ -153,4 +153,13 @@ public class Bord {
     }
     return false;
   }
+
+  public void toonOpenBord() {
+    for (List<Veld> rij : this.velden) {
+      for (Veld veld : rij) {
+        veld.setOpen(true);
+      }
+    }
+    toonBord();
+  }
 }
