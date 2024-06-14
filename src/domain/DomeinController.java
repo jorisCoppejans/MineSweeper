@@ -142,7 +142,7 @@ public class DomeinController {
   }
 
   private void markeerBom(Pair veld) {
-    bord.markeerBom(veld.getX(), veld.getY());
+    this.eindeSpel = bord.markeerBom(veld.getX(), veld.getY());
   }
 
   private boolean vraagActie() {
