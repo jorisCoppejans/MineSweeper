@@ -6,12 +6,8 @@ public class StartUpConsole {
   static DomeinController dc = new DomeinController();
 
   public static void main(String[] args) {
+    dc.maakSpel();
+
     dc.startSpel();
-
-    // while (!dc.isEindeSpel()) {
-    dc.toonBord();
-    // dc.vraagCoordinaten();
-    // }
-
   }
 }
