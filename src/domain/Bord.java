@@ -10,7 +10,6 @@ public class Bord {
   int BreedteBord;
   int HoogteBord;
   Set<Pair> bomPlaatsen = new HashSet<>();
-  int bommenOntdekt = 0;
 
   public Bord(int breedteBord, int hoogteBord) {
     this.BreedteBord = breedteBord;
@@ -142,15 +141,7 @@ public class Bord {
     }
   }
 
-  public boolean markeerBom(int x, int y) {
+  public void markeerBom(int x, int y) {
     this.velden.get(x).get(y).setGemarkeerd(true);
-    if (this.velden.get(x).get(y).getStatus() == VakStatus.BOM) {
-      this.bommenOntdekt++;
-    }
-    if (this.bommenOntdekt == this.bomPlaatsen.size()) {
-      System.out.println("Proficiat! Je hebt gewonnen!");
-      return true;
-    }
-    return false;
   }
 }
