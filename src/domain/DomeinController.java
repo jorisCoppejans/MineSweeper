@@ -131,8 +131,30 @@ public class DomeinController {
   public void startSpel() {
     while (!isEindeSpel()) {
       toonBord();
+      boolean wilOpenen = vraagActie();
       Pair veld = vraagVak();
-      this.eindeSpel = bord.openVak(veld.getX(), veld.getY());
+      if (wilOpenen) {
+        this.eindeSpel = bord.openVak(veld.getX(), veld.getY());
+      } else {
+        markeerBom(veld);
+      }
+    }
+  }
+
+  private void markeerBom(Pair veld) {
+    bord.markeerBom(veld.getX(), veld.getY());
+  }
+
+  private boolean vraagActie() {
+    System.out.println("Wil je een vak openen? (ja/nee)");
+    String antwoord = scanner.next();
+    if (antwoord.equals("ja")) {
+      return true;
+    } else if (antwoord.equals("nee")) {
+      return false;
+    } else {
+      System.err.println("Antwoord moet ja of nee zijn");
+      return vraagActie();
     }
   }
 

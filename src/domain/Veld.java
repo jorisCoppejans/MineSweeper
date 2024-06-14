@@ -6,6 +6,7 @@ public class Veld {
   VakStatus status = VakStatus.LEEG;
   int aantalAangrenzendeBommen = 0;
   boolean open = false;
+  boolean gemarkeerd = false;
 
   public Veld(int x, int y) {
     this.CoorX = x;
@@ -34,5 +35,13 @@ public class Veld {
 
   public boolean isOpen() {
     return open;
+  }
+
+  public void setGemarkeerd(boolean gemarkeerd) {
+    this.gemarkeerd = gemarkeerd;
+  }
+
+  public boolean isGemarkeerd() {
+    return gemarkeerd;
   }
 }
