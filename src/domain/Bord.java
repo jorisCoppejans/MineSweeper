@@ -11,6 +11,7 @@ public class Bord {
   int HoogteBord;
   Set<Pair> bomPlaatsen = new HashSet<>();
   int bommenOntdekt = 0;
+  int geplaatsteBommen = 0;
 
   public Bord(int breedteBord, int hoogteBord) {
     this.BreedteBord = breedteBord;
@@ -143,6 +144,12 @@ public class Bord {
   }
 
   public boolean markeerBom(int x, int y) {
+    if (this.geplaatsteBommen == this.bomPlaatsen.size()) {
+      System.out.println("Alle bommen zijn al gemarkeerd");
+      return false;
+    }
+    this.geplaatsteBommen++;
+
     this.velden.get(x).get(y).setGemarkeerd(true);
     if (this.velden.get(x).get(y).getStatus() == VakStatus.BOM) {
       this.bommenOntdekt++;
@@ -161,5 +168,17 @@ public class Bord {
       }
     }
     toonBord();
+  }
+
+  public void verwijderMarkering(int x, int y) {
+    Veld veld = this.velden.get(x).get(y);
+    if (!veld.isGemarkeerd()) {
+      System.out.println("Dit veld is niet gemarkeerd");
+    } else if (veld.isGemarkeerd()) {
+      veld.setGemarkeerd(false);
+      if (veld.getStatus() == VakStatus.BOM) {
+        this.bommenOntdekt--;
+      }
+    }
   }
 }

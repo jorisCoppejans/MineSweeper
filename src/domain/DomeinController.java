@@ -18,15 +18,9 @@ public class DomeinController {
   }
 
   public void startSpel() {
-    while (!isEindeSpel()) {
+    while (!this.eindeSpel) {
       toonBord();
-      boolean wilOpenen = vraagActie();
-      Pair veld = vraagVak();
-      if (wilOpenen) {
-        this.eindeSpel = bord.openVak(veld.getX(), veld.getY());
-      } else {
-        markeerBom(veld);
-      }
+      vraagActie();
     }
 
     toonOpenBord();
@@ -148,16 +142,30 @@ public class DomeinController {
     this.eindeSpel = bord.markeerBom(veld.getX(), veld.getY());
   }
 
-  private boolean vraagActie() {
-    System.out.printf("wat wil je doen?%n 1. Openen %n 2. Markeren als bom%n");
-    String antwoord = scanner.next();
-    if (antwoord.equals("1")) {
-      return true;
-    } else if (antwoord.equals("2")) {
-      return false;
-    } else {
-      System.err.println("Antwoord moet 1 of 2 zijn");
-      return vraagActie();
+  private void vraagActie() {
+    System.out.printf("wat wil je doen?%n 1. Openen %n 2. Markeren als bom%n 3. verwijder markering%n 4. Stop spel%n");
+    int antwoord = scanner.nextInt();
+
+    switch (antwoord) {
+      case 1:
+        Pair veld = vraagVak();
+        this.eindeSpel = bord.openVak(veld.getX(), veld.getY());
+        break;
+      case 2:
+        Pair veld2 = vraagVak();
+        markeerBom(veld2);
+        break;
+      case 3:
+        Pair veld3 = vraagVak();
+        bord.verwijderMarkering(veld3.getX(), veld3.getY());
+        break;
+      case 4:
+        this.eindeSpel = true;
+        break;
+      default:
+        System.err.println("Antwoord moet 1, 2, 3 of 4 zijn");
+        vraagActie();
+        break;
     }
   }
 
