@@ -114,6 +114,7 @@ public class Bord {
       return true;
     } else if (veld.isOpen()) {
       System.out.println("Dit veld is al open");
+
     } else if (veld.getStatus() == VakStatus.AANGRENSENDE) {
       veld.setOpen(true);
     } else {
